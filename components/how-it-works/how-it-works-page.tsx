@@ -5,6 +5,7 @@ import Link from "next/link";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { siteMetadata } from "@/app/data/site-data";
+import { SittingMascot } from "@/components/mascot/sitting-mascot";
 
 export function HowItWorksPage() {
   const [activeTab, setActiveTab] = useState<"local" | "imported">("local");
@@ -900,119 +901,188 @@ export function HowItWorksPage() {
           id="promise"
           ref={promiseRef}
           aria-labelledby="promise-title"
-          className="tp-paper mt-16 sm:mt-24 rotate-0 sm:-rotate-[0.6deg] scroll-mt-28"
+          className="mt-16 sm:mt-24 scroll-mt-28"
         >
-          <p aria-hidden="true" className="font-scrawl text-lg sm:text-xl md:text-2xl text-toffee-ink">
-            puppy passport
-          </p>
-          <h2
-            id="promise-title"
-            className="font-plush text-huge mt-1 max-w-[16ch] text-[#2a170e]"
-          >
-            Our premium puppy promise
-          </h2>
-          <ul className="mt-12 grid gap-10 sm:grid-cols-2 lg:grid-cols-3">
-            <li className="tp-entry" style={{ ["--ink-stamp" as string]: "#a24a1a", ["--tilt" as string]: "-8deg", ["--i" as string]: 0 }}>
-              <span className="tp-stamp tp-stamp--round">
-                <svg
-                  viewBox="0 0 64 64"
-                  className="tp-stamp__icon"
-                  aria-hidden="true"
-                >
-                  <path
-                    d="M32 54C16 43 8 34 8 24c0-7 5.4-12 12-12 5 0 9 3 12 7 3-4 7-7 12-7 6.6 0 12 5 12 12 0 10-8 19-24 30z"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth="3"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                  />
-                  <path
-                    d="M22 30h7l3-7 4 13 3-6h7"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth="3"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                  />
-                </svg>
-                <span className="tp-stamp__title font-plush">
-                  Hand-selected breeders
-                </span>
-              </span>
-              <p className="tp-entry__text">
-                We work only with breeders who uphold the highest ethical and health
-                standards.
-              </p>
-            </li>
+          {/* The Open Passport Booklet Container */}
+          <div className="relative w-full rounded-[28px] sm:rounded-[36px] bg-[#4e2712] p-2.5 sm:p-3.5 md:p-4 shadow-[0_25px_60px_rgba(42,23,14,0.32)] border-[3px] border-[#381a0b]">
+            {/* Inner Double-Page Paper Spread */}
+            <div className="relative rounded-[22px] sm:rounded-[28px] bg-[#fffbf2] overflow-hidden grid grid-cols-1 md:grid-cols-12 min-h-[480px] sm:min-h-[520px] shadow-inner">
+              {/* Subtle Repeating Concentric Passport Watermark SVG Pattern */}
+              <svg
+                className="absolute inset-0 w-full h-full pointer-events-none opacity-[0.05]"
+                xmlns="http://www.w3.org/2000/svg"
+                aria-hidden="true"
+              >
+                <defs>
+                  <pattern
+                    id="passport-guilloche-how"
+                    x="0"
+                    y="0"
+                    width="120"
+                    height="120"
+                    patternUnits="userSpaceOnUse"
+                  >
+                    <circle cx="60" cy="60" r="50" fill="none" stroke="#2a170e" strokeWidth="1.2" />
+                    <circle cx="60" cy="60" r="40" fill="none" stroke="#2a170e" strokeWidth="0.8" />
+                    <circle cx="60" cy="60" r="30" fill="none" stroke="#2a170e" strokeWidth="0.8" strokeDasharray="2 3" />
+                    <circle cx="60" cy="60" r="20" fill="none" stroke="#2a170e" strokeWidth="1" />
+                  </pattern>
+                </defs>
+                <rect width="100%" height="100%" fill="url(#passport-guilloche-how)" />
+              </svg>
 
-            <li className="tp-entry" style={{ ["--ink-stamp" as string]: "#1f6b45", ["--tilt" as string]: "5deg", ["--i" as string]: 1 }}>
-              <span className="tp-stamp tp-stamp--ticket">
-                <svg
-                  viewBox="0 0 64 64"
-                  className="tp-stamp__icon"
-                  aria-hidden="true"
-                >
-                  <path
-                    d="M6 36l22-3 12-17h6l-6 17 12-1 6-7h3l-2 10 2 10h-3l-6-7-12-1 6 17h-6L28 37 6 36z"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth="3"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                  />
-                  <path
-                    d="M8 50c10 4 20 4 30 0"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth="3"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeDasharray="2 7"
-                  />
-                </svg>
-                <span className="tp-stamp__title font-plush">Full transparency</span>
-              </span>
-              <p className="tp-entry__text">
-                Photos, videos, and health certificates are shared before your puppy
-                travels.
-              </p>
-            </li>
+              {/* Center Book Spine Crease & Shadow */}
+              <div
+                aria-hidden="true"
+                className="hidden md:block absolute left-1/2 top-0 bottom-0 w-[2px] -translate-x-1/2 bg-[#2a170e]/15 z-20 shadow-[0_0_12px_rgba(42,23,14,0.18)]"
+              >
+                <div className="absolute top-0 bottom-0 -left-6 w-6 bg-gradient-to-r from-transparent to-[#2a170e]/8 pointer-events-none" />
+                <div className="absolute top-0 bottom-0 -right-6 w-6 bg-gradient-to-l from-transparent to-[#2a170e]/8 pointer-events-none" />
+              </div>
 
-            <li className="tp-entry" style={{ ["--ink-stamp" as string]: "#5a3a28", ["--tilt" as string]: "-4deg", ["--i" as string]: 2 }}>
-              <span className="tp-stamp tp-stamp--oval">
-                <svg
-                  viewBox="0 0 64 64"
-                  className="tp-stamp__icon"
-                  aria-hidden="true"
-                >
-                  <path
-                    d="M10 14h44v28H30l-12 10v-10h-8z"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth="3"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
+              {/* Left Page: Title, Script Kicker & Mascot Puppy */}
+              <div className="md:col-span-5 p-6 sm:p-8 lg:p-10 flex flex-col justify-between relative z-10 border-b md:border-b-0 md:border-r border-[#2a170e]/10">
+                <div>
+                  <span className="font-scrawl text-lg sm:text-xl md:text-2xl text-[#8a3814] block">
+                    puppy passport
+                  </span>
+                  <h2
+                    id="promise-title"
+                    className="font-heading text-3xl sm:text-4xl lg:text-[44px] text-[#2a170e] font-black leading-[1.08] tracking-tight mt-1 max-w-[12ch]"
+                  >
+                    Our premium puppy promise
+                  </h2>
+                  <p className="font-body text-xs sm:text-sm text-[#5a3a28] mt-3 leading-relaxed max-w-[280px]">
+                    Every puppy is treated like family. We guarantee pure genetics, licensed
+                    veterinarian approvals, and compassionate care every step of the journey.
+                  </p>
+                </div>
+
+                {/* Sitting Mascot Puppy at bottom of left page looking right */}
+                <div className="pt-8 sm:pt-12 flex justify-start sm:justify-center md:justify-start">
+                  <SittingMascot
+                    className="w-28 sm:w-36 md:w-40 h-auto cursor-pointer transition-transform hover:scale-105"
+                    facing="right"
                   />
-                  <path
-                    d="M22 28h0M32 28h0M42 28h0"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth="5"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                  />
-                </svg>
-                <span className="tp-stamp__title font-plush">
-                  Safe, stress-free delivery
-                </span>
-              </span>
-              <p className="tp-entry__text">
-                We handle every detail of the import process, so your puppy arrives
-                happy, healthy, and ready to love you.
-              </p>
-            </li>
-          </ul>
+                </div>
+              </div>
+
+              {/* Right Page: 2x2 Grid of Official Stamps */}
+              <div className="md:col-span-7 p-6 sm:p-8 lg:p-10 relative z-10 flex flex-col justify-center">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 sm:gap-8">
+                  {/* Stamp 1: Hand-selected breeders */}
+                  <div className="flex flex-col items-center text-center">
+                    <div className="passport-stamp-badge tp-stamp w-28 h-28 rounded-full border-2 border-[#8a3814] flex flex-col items-center justify-center p-2 rotate-[-3deg] transition-transform duration-300 hover:rotate-0 hover:scale-105 shadow-2xs bg-[#8a3814]/[0.03]">
+                      <div className="w-24 h-24 rounded-full border border-dashed border-[#8a3814] flex flex-col items-center justify-center p-1">
+                        <svg
+                          viewBox="0 0 24 24"
+                          className="w-6 h-6 text-[#8a3814]"
+                          fill="none"
+                          stroke="currentColor"
+                          strokeWidth="2"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          aria-hidden="true"
+                        >
+                          <path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z" />
+                          <path d="M3.22 12H9.5l1.5-3 2 6 1.5-3h6.28" />
+                        </svg>
+                        <span className="font-heading font-black text-[10px] text-[#8a3814] uppercase tracking-wider text-center leading-tight mt-1">
+                          Hand-selected<br />breeders
+                        </span>
+                      </div>
+                    </div>
+                    <p className="font-body text-xs sm:text-[13px] text-[#5a3a28] mt-3 leading-relaxed max-w-[200px]">
+                      We work only with breeders who uphold the highest ethical and health standards.
+                    </p>
+                  </div>
+
+                  {/* Stamp 2: Full transparency */}
+                  <div className="flex flex-col items-center text-center">
+                    <div className="passport-stamp-badge tp-stamp w-32 h-24 rounded-2xl border-2 border-[#1f7a4d] flex flex-col items-center justify-center p-1.5 rotate-[4deg] transition-transform duration-300 hover:rotate-0 hover:scale-105 shadow-2xs bg-[#1f7a4d]/[0.03]">
+                      <div className="w-full h-full rounded-xl border border-dashed border-[#1f7a4d] flex flex-col items-center justify-center p-1">
+                        <svg
+                          viewBox="0 0 24 24"
+                          className="w-6 h-6 text-[#1f7a4d]"
+                          fill="none"
+                          stroke="currentColor"
+                          strokeWidth="2"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          aria-hidden="true"
+                        >
+                          <path d="M17.8 19.2 16 11l3.5-3.5C21 6 21.5 4 21 3c-1-.5-3 0-4.5 1.5L13 8 4.8 6.2c-.5-.1-.9.1-1.1.5l-.3.5c-.2.5-.1 1 .3 1.3L9 12l-2 3H4l-1 1 3 2 2 3 1-1v-3l3-2 3.5 5.3c.3.4.8.5 1.3.3l.5-.2c.4-.3.6-.7.5-1.2z" />
+                        </svg>
+                        <span className="font-heading font-black text-[10px] text-[#1f7a4d] uppercase tracking-wider text-center leading-tight mt-1">
+                          Full<br />transparency
+                        </span>
+                      </div>
+                    </div>
+                    <p className="font-body text-xs sm:text-[13px] text-[#5a3a28] mt-3 leading-relaxed max-w-[200px]">
+                      Photos, videos, and health certificates are shared before your puppy travels.
+                    </p>
+                  </div>
+
+                  {/* Stamp 3: Safe, stress-free delivery */}
+                  <div className="flex flex-col items-center text-center">
+                    <div className="passport-stamp-badge tp-stamp w-32 h-24 rounded-[36px] border-2 border-[#5a3a28] flex flex-col items-center justify-center p-1.5 rotate-[-2deg] transition-transform duration-300 hover:rotate-0 hover:scale-105 shadow-2xs bg-[#5a3a28]/[0.03]">
+                      <div className="w-full h-full rounded-[30px] border border-dashed border-[#5a3a28] flex flex-col items-center justify-center p-1">
+                        <svg
+                          viewBox="0 0 24 24"
+                          className="w-6 h-6 text-[#5a3a28]"
+                          fill="none"
+                          stroke="currentColor"
+                          strokeWidth="2"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          aria-hidden="true"
+                        >
+                          <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
+                          <line x1="8" y1="10" x2="8.01" y2="10" strokeWidth="3" />
+                          <line x1="12" y1="10" x2="12.01" y2="10" strokeWidth="3" />
+                          <line x1="16" y1="10" x2="16.01" y2="10" strokeWidth="3" />
+                        </svg>
+                        <span className="font-heading font-black text-[10px] text-[#5a3a28] uppercase tracking-wider text-center leading-tight mt-1">
+                          Safe, stress-free<br />delivery
+                        </span>
+                      </div>
+                    </div>
+                    <p className="font-body text-xs sm:text-[13px] text-[#5a3a28] mt-3 leading-relaxed max-w-[200px]">
+                      We handle every detail of the import process, so your puppy arrives happy and healthy.
+                    </p>
+                  </div>
+
+                  {/* Stamp 4: Certified health guarantee */}
+                  <div className="flex flex-col items-center text-center">
+                    <div className="passport-stamp-badge tp-stamp w-28 h-28 rounded-full border-2 border-dotted border-[#b85b24] flex flex-col items-center justify-center p-1.5 rotate-[3deg] transition-transform duration-300 hover:rotate-0 hover:scale-105 shadow-2xs bg-[#b85b24]/[0.03]">
+                      <div className="w-24 h-24 rounded-full border border-[#b85b24] flex flex-col items-center justify-center p-1">
+                        <svg
+                          viewBox="0 0 24 24"
+                          className="w-6 h-6 text-[#b85b24]"
+                          fill="none"
+                          stroke="currentColor"
+                          strokeWidth="2"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          aria-hidden="true"
+                        >
+                          <circle cx="12" cy="12" r="10" />
+                          <line x1="2" y1="12" x2="22" y2="12" />
+                          <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z" />
+                        </svg>
+                        <span className="font-heading font-black text-[9.5px] text-[#b85b24] uppercase tracking-wider text-center leading-tight mt-1">
+                          Certified Health<br />Guarantee
+                        </span>
+                      </div>
+                    </div>
+                    <p className="font-body text-xs sm:text-[13px] text-[#5a3a28] mt-3 leading-relaxed max-w-[200px]">
+                      Puppies delivered to loving homes all around the world with vet certification.
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
         </section>
 
         {/* 3. Delivery & Collection Section */}

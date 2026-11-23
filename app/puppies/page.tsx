@@ -1,12 +1,12 @@
 import type { Metadata } from "next";
-import { SmoothScroll } from "@/components/smooth-scroll";
-import { Preloader } from "@/components/preloader";
-import { ScrollProgressBar } from "@/components/scroll-progress-bar";
-import { PawTrail } from "@/components/paw-trail";
-import { LandingCompanion } from "@/components/landing-companion";
-import { Header } from "@/components/header";
-import { AvailablePuppiesPage } from "@/components/available-puppies";
-import { Footer } from "@/components/footer";
+import { SmoothScroll } from "@/components/smooth-scroll/smooth-scroll";
+import { Preloader } from "@/components/preloader/preloader";
+import { ScrollProgressBar } from "@/components/scroll-progress-bar/scroll-progress-bar";
+import { PawTrail } from "@/components/paw-trail/paw-trail";
+import { LandingCompanion } from "@/components/landing-companion/landing-companion";
+import { Header } from "@/components/header/header";
+import { AvailablePuppiesPage } from "@/components/available-puppies/available-puppies-page";
+import { Footer } from "@/components/footer/footer";
 
 export const metadata: Metadata = {
   title: "Available Puppies | TeddyPups U.A.E.",

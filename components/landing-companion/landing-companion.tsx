@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState, useRef } from "react";
-import { PuppySVG } from "@/components/puppy-svg";
+import { PuppySVG } from "@/components/puppy-svg/puppy-svg";
 import { motion, AnimatePresence } from "motion/react";
 
 interface FloatingFootprint {

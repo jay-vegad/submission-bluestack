@@ -7,7 +7,7 @@ import { PuppySketchCard } from "./puppy-sketch-card";
 import { PuppyFilterBar } from "./puppy-filter-bar";
 import { AlreadyGoneHomeBanner } from "./already-gone-home-banner";
 import { PuppyVideoModal } from "./puppy-video-modal";
-import { PuppySVG } from "../puppy-svg/puppy-svg";
+import { TeddySelfPortrait } from "./teddy-self-portrait";
 
 export function AvailablePuppiesPage() {
   const [whereFilter, setWhereFilter] = useState<"everywhere" | "imported" | "korean-teacup">("everywhere");
@@ -97,73 +97,7 @@ export function AvailablePuppiesPage() {
             </div>
 
             {/* Right: Circular Hand-drawn Badge with Teddy ("self-portrait" underneath matching screenshot) */}
-            <div className="self-start lg:self-auto flex flex-col items-center shrink-0">
-              <div className="relative group cursor-pointer">
-                {/* Speech Bubble floating on top-left of the portrait */}
-                <div className="absolute -top-5 -left-3 sm:-top-7 sm:-left-5 z-20 pointer-events-none transition-transform duration-300 group-hover:scale-110 group-hover:-translate-y-1">
-                  <div className="relative bg-white border-2 border-[#2a170e] rounded-[1.25rem] px-3 sm:px-4 py-0.5 sm:py-1 shadow-[2px_2.5px_0_0_rgba(42,23,14,0.18)]">
-                    <span className="font-scrawl text-sm sm:text-base md:text-[17px] text-[#2a170e] font-bold tracking-wide select-none block">
-                      zoomies!
-                    </span>
-                    {/* Speech bubble pointer arrow */}
-                    <svg
-                      className="absolute -bottom-2 right-4 w-3.5 h-2.5 overflow-visible"
-                      viewBox="0 0 14 10"
-                      fill="none"
-                      aria-hidden="true"
-                    >
-                      <path d="M0 0 L14 0 L5 9 Z" fill="#ffffff" />
-                      <path d="M0 0 L5 9 L13 0" stroke="#2a170e" strokeWidth="2" strokeLinejoin="round" />
-                    </svg>
-                  </div>
-                </div>
-
-                {/* Circular Portrait Frame - Large, Crisp, Clean */}
-                <div className="relative w-40 h-40 sm:w-48 sm:h-48 md:w-52 md:h-52 lg:w-56 lg:h-56 aspect-square rounded-full bg-[#faebd4] border-[2.8px] border-[#2a170e] shadow-[3px_5px_0_0_rgba(42,23,14,0.15)] flex items-center justify-center overflow-hidden transition-transform duration-400 group-hover:scale-[1.03]">
-                  {/* Subtle inner sketchy outline */}
-                  <svg
-                    aria-hidden="true"
-                    viewBox="0 0 100 100"
-                    className="absolute inset-0 w-full h-full pointer-events-none z-10"
-                  >
-                    <circle
-                      cx="50"
-                      cy="50"
-                      r="46"
-                      fill="none"
-                      stroke="#2a170e"
-                      strokeWidth="1.2"
-                      strokeDasharray="94 6"
-                      opacity="0.3"
-                    />
-                    <circle
-                      cx="50"
-                      cy="50"
-                      r="43.5"
-                      fill="none"
-                      stroke="#2a170e"
-                      strokeWidth="0.8"
-                      strokeDasharray="6 3"
-                      opacity="0.25"
-                    />
-                  </svg>
-
-                  {/* High fidelity Teddy Vector Mascot */}
-                  <div className="relative w-[85%] h-[85%] flex items-center justify-center translate-y-1 sm:translate-y-2">
-                    <PuppySVG
-                      flipX={true}
-                      isHappy={true}
-                      className="w-full h-auto drop-shadow-sm select-none"
-                    />
-                  </div>
-                </div>
-              </div>
-
-              {/* Hand-drawn "self-portrait" underneath matching screenshot */}
-              <span className="font-scrawl text-[#2a170e] text-lg sm:text-xl md:text-2xl font-bold tracking-wide mt-3 select-none">
-                self-portrait
-              </span>
-            </div>
+            <TeddySelfPortrait />
           </div>
 
           {/* Interactive Hand-drawn Sketchbook Filter Box (Full Width) */}

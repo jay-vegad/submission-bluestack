@@ -1,19 +1,110 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { happyFamiliesData } from "@/app/data/site-data";
+import { TeddyMascot } from "@/components/mascot/teddy-mascot";
+
+interface FamilyPhoto {
+  id: number;
+  src: string;
+  caption: string;
+  tilt: string;
+  tape: string;
+  tapeClass: string;
+  hasBothTapes?: boolean;
+  delay: string;
+  bgColor: string;
+}
+
+const FAMILY_PHOTOS: FamilyPhoto[] = [
+  {
+    id: 1,
+    src: "https://puppy.instabizweb.com/media/dI8Jv0KRTiLJ/d2d7e5375b/27b888_7d940ce5701f48d98327e4a242b53ac4-mv2.jpg",
+    caption: "Lulu 🧸 with her new mummy ❤️",
+    tilt: "-2.2deg",
+    tape: "#f6d79a",
+    tapeClass: "tp-tape--center",
+    delay: "330ms",
+    bgColor: "rgb(216, 184, 152)",
+  },
+  {
+    id: 2,
+    src: "https://puppy.instabizweb.com/media/TI-WtaFssfQt/c41fb2a387/27b888_15920f828b864dd1b44b98ec4e964c53-mv2.jpg",
+    caption: "Adorable Maltipoo baby 🧸❤️",
+    tilt: "1.6deg",
+    tape: "#f9cdbf",
+    tapeClass: "tp-tape--left",
+    delay: "0ms",
+    bgColor: "rgb(216, 184, 136)",
+  },
+  {
+    id: 3,
+    src: "https://puppy.instabizweb.com/media/j6T9eswP2eS8/59c6879a1d/27b888_bc27df54dcce410196c6016475364ff3-mv2.jpg",
+    caption: "My new teddy puppy 🥰🧸",
+    tilt: "-0.9deg",
+    tape: "#cfe5f6",
+    tapeClass: "tp-tape--right",
+    delay: "550ms",
+    bgColor: "rgb(200, 184, 152)",
+  },
+  {
+    id: 4,
+    src: "https://puppy.instabizweb.com/media/HJgL4rRnmReV/533701358f/27b888_082e47dfd8144423a96dc70d966fa5b2-mv2.jpg",
+    caption: "Our new puppies 🧸🥰🤗",
+    tilt: "2.4deg",
+    tape: "#f6d79a",
+    tapeClass: "tp-tape--tl",
+    hasBothTapes: true,
+    delay: "110ms",
+    bgColor: "rgb(200, 168, 136)",
+  },
+  {
+    id: 5,
+    src: "https://puppy.instabizweb.com/media/uc5ANs5jm7r7/7160d8b7b1/27b888_f7f4966e59e94db591784d4ec546682f-mv2.jpg",
+    caption: "New puppy 🧸😍",
+    tilt: "-1.5deg",
+    tape: "#e9dcc4",
+    tapeClass: "tp-tape--center",
+    delay: "660ms",
+    bgColor: "rgb(232, 216, 184)",
+  },
+  {
+    id: 6,
+    src: "https://puppy.instabizweb.com/media/pRJubyqHw8p7/d58c4c07ee/27b888_b073c5815f7c4f92ad9a57741a653663-mv2.jpg",
+    caption: "Gang of 3 😍🧸",
+    tilt: "0.8deg",
+    tape: "#f6d79a",
+    tapeClass: "tp-tape--right",
+    delay: "220ms",
+    bgColor: "rgb(184, 152, 120)",
+  },
+  {
+    id: 7,
+    src: "https://puppy.instabizweb.com/media/4wOJk9azop_-/65ecf66bf0/27b888_cfe895dbcc2d4bff85f890be9b496543-mv2.jpg",
+    caption: "So happy 😍😍",
+    tilt: "-2.6deg",
+    tape: "#f9cdbf",
+    tapeClass: "tp-tape--left",
+    delay: "770ms",
+    bgColor: "rgb(88, 56, 56)",
+  },
+  {
+    id: 8,
+    src: "https://puppy.instabizweb.com/media/3h20rIasJCOa/10c307cb1c/27b888_a7e7ab6a931e4c79a798bab9927d396e-mv2.jpg",
+    caption: "New pup 🤗💫",
+    tilt: "1.2deg",
+    tape: "#cfe5f6",
+    tapeClass: "tp-tape--center",
+    delay: "440ms",
+    bgColor: "rgb(24, 40, 72)",
+  },
+];
 
 export function HappyFamilies() {
-  const [selectedPhotoIndex, setSelectedPhotoIndex] = useState<number | null>(
-    null
-  );
+  const [selectedPhotoIndex, setSelectedPhotoIndex] = useState<number | null>(null);
+  const [teddyHappy, setTeddyHappy] = useState(false);
 
-  const photos = happyFamiliesData.photos.slice(0, 16); // Show 16 high-impact family photos
-  const testimonials = happyFamiliesData.testimonials;
-
-  // Keyboard navigation for lightbox
   useEffect(() => {
     if (selectedPhotoIndex === null) return;
 
@@ -21,12 +112,10 @@ export function HappyFamilies() {
       if (e.key === "Escape") {
         setSelectedPhotoIndex(null);
       } else if (e.key === "ArrowRight") {
-        setSelectedPhotoIndex((prev) =>
-          prev !== null ? (prev + 1) % photos.length : 0
-        );
+        setSelectedPhotoIndex((prev) => (prev !== null ? (prev + 1) % FAMILY_PHOTOS.length : 0));
       } else if (e.key === "ArrowLeft") {
         setSelectedPhotoIndex((prev) =>
-          prev !== null ? (prev - 1 + photos.length) % photos.length : 0
+          prev !== null ? (prev - 1 + FAMILY_PHOTOS.length) % FAMILY_PHOTOS.length : 0
         );
       }
     };
@@ -38,208 +127,187 @@ export function HappyFamilies() {
       window.removeEventListener("keydown", handleKeyDown);
       document.body.style.overflow = "";
     };
-  }, [selectedPhotoIndex, photos.length]);
+  }, [selectedPhotoIndex]);
 
-  const activePhoto =
-    selectedPhotoIndex !== null ? photos[selectedPhotoIndex] : null;
+  const activePhoto = selectedPhotoIndex !== null ? FAMILY_PHOTOS[selectedPhotoIndex] : null;
 
   return (
-    <section
-      id="families"
-      className="pt-24 lg:pt-32 pb-20 lg:pb-28 bg-[#fffdf8] relative"
-      aria-labelledby="dusk-title"
-    >
-      <div className="max-w-[1152px] mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="text-center max-w-2xl mx-auto mb-16">
-          <span className="font-scrawl text-lg text-[#a24a1a]">
-            Pure happiness
-          </span>
-          <h2
-            id="dusk-title"
-            className="font-plush text-4xl sm:text-5xl lg:text-6xl text-[#2a170e] mt-2 font-extrabold tracking-tight"
-          >
-            {happyFamiliesData.heading}
-          </h2>
-          <p className="font-body text-[#5a3a28] text-base sm:text-lg mt-3">
-            {happyFamiliesData.body}
-          </p>
+    <div data-section="families">
+      <section
+        aria-labelledby="dusk-title"
+        className="tp-scene tp-dusk"
+        data-pup-scene="true"
+        data-tone="dark"
+        data-here="true"
+        data-visited="true"
+        style={{ "--sky-top": "#a65a30", "--sky-bottom": "#4d2b19" } as React.CSSProperties}
+      >
+        <div className="tp-dusk__sky gutter">
+          <div className="tp-dusk__head">
+            <h2 id="dusk-title" className="font-plush text-huge">
+              Happy families &amp; puppies
+            </h2>
+            <p className="text-lede mt-5 max-w-[50ch] text-[var(--ink-soft)]">
+              We are truly honored to see our puppies become cherished members of loving families.
+              These heartwarming moments have been shared by our valued clients who welcomed a
+              Teddy Pup into their homes and hearts.
+            </p>
+          </div>
+
+          <figure className="tp-dusk__note">
+            <blockquote className="font-plush-text">
+              “TeddyPups truly made our dream a reality. They supported us at every step of the import
+              journey. Our Maltipoo arrived healthy, cheerful, and absolutely perfect. Having 24/7 support
+              throughout the process gave us complete peace of mind.”
+            </blockquote>
+            <figcaption className="font-scrawl">
+              Sarah M., Dubai, UAE
+            </figcaption>
+          </figure>
         </div>
 
-        {/* Testimonials 3-Card Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 lg:gap-8 mb-16">
-          {testimonials.map((t) => (
-            <div
-              key={t.id}
-              className="bg-[#fbe3b4]/20 border-2 border-[#e8d8c8] rounded-3xl p-6 flex flex-col justify-between shadow-[rgba(42,23,14,0.2)_2px_3px_0px_0px] hover:shadow-[rgba(42,23,14,0.25)_0px_7px_0px_-3px] hover:-translate-y-1 transition-all duration-300"
-            >
-              <div>
-                {/* 5 Stars */}
-                <div className="flex items-center gap-1 text-[#f2be6b] mb-4">
-                  {[...Array(t.rating)].map((_, i) => (
-                    <svg
-                      key={i}
-                      className="w-5 h-5 fill-current"
-                      viewBox="0 0 20 20"
+        <div className="tp-photowall">
+          <div className="tp-photowall__wall">
+            <ul aria-label="Photos from TeddyPups families" className="tp-photowall__prints">
+              {FAMILY_PHOTOS.map((photo, i) => (
+                <li
+                  key={photo.id}
+                  data-armed="true"
+                  data-reveal="true"
+                  data-revealed="true"
+                  style={{ "--d": photo.delay } as React.CSSProperties}
+                >
+                  <button
+                    aria-label={`Open photo ${i + 1} of ${FAMILY_PHOTOS.length}: ${photo.caption}`}
+                    className="tp-photowall__print"
+                    type="button"
+                    onClick={() => setSelectedPhotoIndex(i)}
+                  >
+                    <span
+                      className="tp-polaroid"
+                      style={
+                        {
+                          "--tilt": photo.tilt,
+                          "--tape": photo.tape,
+                          "--i": i,
+                        } as React.CSSProperties
+                      }
                     >
-                      <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
-                    </svg>
-                  ))}
-                </div>
+                      {photo.hasBothTapes ? (
+                        <>
+                          <span aria-hidden="true" className="tp-tape tp-tape--tl" />
+                          <span aria-hidden="true" className="tp-tape tp-tape--tr" />
+                        </>
+                      ) : (
+                        <span aria-hidden="true" className={`tp-tape ${photo.tapeClass}`} />
+                      )}
+                      <span className="tp-polaroid__photo">
+                        <Image
+                          alt="A happy TeddyPups family with their new puppy"
+                          src={photo.src}
+                          width={433}
+                          height={433}
+                          loading="lazy"
+                          sizes="(min-width: 1024px) 18vw, (min-width: 640px) 28vw, 42vw"
+                          style={{
+                            width: "100%",
+                            height: "auto",
+                            backgroundColor: photo.bgColor,
+                          }}
+                        />
+                      </span>
+                      <span className="tp-polaroid__caption font-scrawl">
+                        {photo.caption}
+                      </span>
+                    </span>
+                  </button>
+                </li>
+              ))}
+            </ul>
 
-                <p className="font-body text-[#2a170e] text-base italic leading-relaxed mb-6">
-                  &ldquo;{t.quote}&rdquo;
+            <div className="tp-facade__ground">
+              <span aria-hidden="true" className="tp-facade__door" />
+              <span aria-hidden="true" className="tp-lamp">
+                <span className="tp-lamp__light" />
+              </span>
+
+              <Link className="btn btn-primary tp-facade__cta" href="/happy-families">
+                See every happy family
+              </Link>
+
+              <TeddyMascot pose="sit" facing="right" className="tp-dusk__teddy" />
+            </div>
+
+            <div aria-hidden="true" className="tp-street__pavement" />
+          </div>
+        </div>
+
+        {/* Fullscreen Lightbox Photo Viewer */}
+        {activePhoto && (
+          <div
+            className="fixed inset-0 z-50 flex items-center justify-center bg-black/85 backdrop-blur-md p-4 animate-in fade-in duration-200"
+            onClick={() => setSelectedPhotoIndex(null)}
+          >
+            <div
+              className="relative max-w-xl w-full bg-[#fffdf8] p-4 sm:p-6 rounded-3xl shadow-2xl flex flex-col items-center"
+              onClick={(e) => e.stopPropagation()}
+            >
+              <button
+                type="button"
+                onClick={() => setSelectedPhotoIndex(null)}
+                className="absolute top-3 right-4 w-10 h-10 rounded-full bg-[#2a170e]/10 hover:bg-[#2a170e]/20 text-[#2a170e] flex items-center justify-center font-bold text-xl transition-colors z-20"
+                aria-label="Close photo preview"
+              >
+                ✕
+              </button>
+
+              <div className="relative w-full aspect-square max-h-[70vh] rounded-2xl overflow-hidden shadow-inner">
+                <Image
+                  src={activePhoto.src}
+                  alt={activePhoto.caption}
+                  fill
+                  className="object-cover"
+                  sizes="(max-width: 768px) 90vw, 600px"
+                  priority
+                />
+              </div>
+
+              <div className="mt-4 text-center">
+                <p className="font-scrawl text-xl sm:text-2xl text-[#2a170e]">
+                  {activePhoto.caption}
+                </p>
+                <p className="font-body text-xs text-[#5a3a28] mt-1">
+                  Photo {selectedPhotoIndex! + 1} of {FAMILY_PHOTOS.length} • Click outside or press Esc to close
                 </p>
               </div>
 
-              <div className="pt-4 border-t border-[#e8dfd3] flex items-center justify-between">
-                <div>
-                  <h4 className="font-heading text-lg text-[#2a170e] font-semibold">
-                    {t.name}
-                  </h4>
-                  <span className="text-xs text-[#5a3a28]">{t.location}</span>
-                </div>
-                <span className="text-xs font-semibold px-2.5 py-1 rounded-full bg-[#a24a1a]/10 text-[#a24a1a]">
-                  {t.puppy}
-                </span>
-              </div>
-            </div>
-          ))}
-        </div>
-
-        {/* Photo Gallery Grid */}
-        <div className="mb-8">
-          <div className="flex items-center justify-between mb-6">
-            <h3 className="font-heading text-2xl text-[#2a170e]">
-              Client Photo Moments
-            </h3>
-            <span className="text-xs text-[#5a3a28] font-medium hidden sm:inline">
-              Click any photo to enlarge
-            </span>
-          </div>
-
-          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-6">
-            {photos.map((photo, index) => (
-              <button
-                key={photo.id}
-                type="button"
-                onClick={() => setSelectedPhotoIndex(index)}
-                className="group relative aspect-square rounded-2xl overflow-hidden border border-[#e8dfd3] bg-[#fbe3b4]/30 text-left focus:outline-none focus:ring-4 focus:ring-[#f2be6b] shadow-sm hover:shadow-md transition-all duration-300"
-                aria-label={`View photo: ${photo.caption}`}
-              >
-                <Image
-                  src={photo.imageUrl}
-                  alt={photo.alt}
-                  fill
-                  sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"
-                  className="object-cover group-hover:scale-105 transition-transform duration-500 ease-out"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end p-3.5">
-                  <span className="text-xs font-medium text-white line-clamp-2">
-                    {photo.caption}
-                  </span>
-                </div>
-              </button>
-            ))}
-          </div>
-
-          {/* Link to Dedicated Happy Families Full Wall Page */}
-          <div className="mt-12 text-center">
-            <Link
-              href="/happy-families"
-              className="inline-flex items-center gap-2.5 px-8 py-4 rounded-full bg-[#a24a1a] text-[#fffdf8] font-semibold text-base shadow-[0_4px_0_0_#2a170e] hover:shadow-[0_6px_0_0_#2a170e] hover:-translate-y-0.5 hover:-rotate-1 active:translate-y-1 active:rotate-0 active:shadow-[0_1px_0_0_#2a170e] transition-all duration-200"
-            >
-              <span>See all 64 happy families &amp; photo moments</span>
-              <span className="text-lg">→</span>
-            </Link>
-          </div>
-        </div>
-      </div>
-
-      {/* Lightbox Modal */}
-      {activePhoto && selectedPhotoIndex !== null && (
-        <div
-          className="fixed inset-0 z-50 bg-black/90 backdrop-blur-md flex items-center justify-center p-4 sm:p-6"
-          role="dialog"
-          aria-modal="true"
-          aria-label="Photo Lightbox"
-          onClick={() => setSelectedPhotoIndex(null)}
-        >
-          <div
-            className="relative max-w-3xl w-full flex flex-col items-center bg-[#fffdf8] rounded-3xl p-4 sm:p-6 overflow-hidden shadow-2xl"
-            onClick={(e) => e.stopPropagation()}
-          >
-            {/* Close Button */}
-            <button
-              type="button"
-              onClick={() => setSelectedPhotoIndex(null)}
-              className="absolute top-4 right-4 z-20 w-10 h-10 rounded-full bg-[#2a170e] text-white flex items-center justify-center hover:bg-[#a24a1a] transition-colors"
-              aria-label="Close photo"
-            >
-              <svg
-                width="20"
-                height="20"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2.5"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              >
-                <line x1="18" y1="6" x2="6" y2="18" />
-                <line x1="6" y1="6" x2="18" y2="18" />
-              </svg>
-            </button>
-
-            {/* Photo Container */}
-            <div className="relative w-full aspect-square max-h-[60vh] rounded-2xl overflow-hidden bg-[#e8dfd3]">
-              <Image
-                src={activePhoto.imageUrl}
-                alt={activePhoto.alt}
-                fill
-                sizes="(max-width: 1024px) 90vw, 750px"
-                className="object-contain"
-                priority
-              />
-            </div>
-
-            {/* Caption & Controls */}
-            <div className="w-full mt-4 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-              <p className="font-heading text-lg text-[#2a170e]">
-                {activePhoto.caption}
-              </p>
-
-              <div className="flex items-center gap-2">
+              {/* Prev / Next controls */}
+              <div className="flex items-center justify-between w-full mt-4 px-2">
                 <button
                   type="button"
                   onClick={() =>
                     setSelectedPhotoIndex(
-                      (selectedPhotoIndex - 1 + photos.length) % photos.length
+                      (prev) => (prev! - 1 + FAMILY_PHOTOS.length) % FAMILY_PHOTOS.length
                     )
                   }
-                  className="px-3 py-1.5 rounded-full border border-[#e8dfd3] text-sm text-[#2a170e] hover:bg-[#fbe3b4] transition-colors"
+                  className="btn btn-ghost text-sm py-1.5 px-4"
                 >
-                  ← Prev
+                  ← Previous
                 </button>
-                <span className="text-xs text-[#5a3a28]">
-                  {selectedPhotoIndex + 1} / {photos.length}
-                </span>
                 <button
                   type="button"
                   onClick={() =>
-                    setSelectedPhotoIndex(
-                      (selectedPhotoIndex + 1) % photos.length
-                    )
+                    setSelectedPhotoIndex((prev) => (prev! + 1) % FAMILY_PHOTOS.length)
                   }
-                  className="px-3 py-1.5 rounded-full border border-[#e8dfd3] text-sm text-[#2a170e] hover:bg-[#fbe3b4] transition-colors"
+                  className="btn btn-ghost text-sm py-1.5 px-4"
                 >
                   Next →
                 </button>
               </div>
             </div>
           </div>
-        </div>
-      )}
-    </section>
+        )}
+      </section>
+    </div>
   );
 }
-

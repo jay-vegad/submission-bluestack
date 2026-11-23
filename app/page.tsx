@@ -1,20 +1,50 @@
-import { Preloader } from "@/components/preloader";
-import { Header } from "@/components/header";
-import { Hero } from "@/components/hero";
-import { MeetPups } from "@/components/meet-pups";
-import { WaysToMeet } from "@/components/ways-to-meet";
-import { PuppyJourney } from "@/components/puppy-journey";
-import { WhyTrust } from "@/components/why-trust";
-import { HappyFamilies } from "@/components/happy-families";
-import { FaqAccordion } from "@/components/faq-accordion";
-import { CtaSection } from "@/components/cta-section";
-import { Footer } from "@/components/footer";
-import { ScrollProgressBar } from "@/components/scroll-progress-bar";
-import { PawTrail } from "@/components/paw-trail";
-import { LandingCompanion } from "@/components/landing-companion";
-import { SmoothScroll } from "@/components/smooth-scroll";
+import Link from "next/link";
+import { Preloader } from "@/components/preloader/preloader";
+import { Header } from "@/components/header/header";
+import { Hero } from "@/components/hero/hero";
+import { MeetPups } from "@/components/meet-pups/meet-pups";
+import { WaysToMeet } from "@/components/ways-to-meet/ways-to-meet";
+import { PuppyJourney } from "@/components/puppy-journey/puppy-journey";
+import { WhyTrust } from "@/components/why-trust/why-trust";
+import { HappyFamilies } from "@/components/happy-families/happy-families";
+import { FaqAccordion } from "@/components/faq-accordion/faq-accordion";
+import { CtaSection } from "@/components/cta-section/cta-section";
+import { Footer } from "@/components/footer/footer";
+import { ScrollProgressBar } from "@/components/scroll-progress-bar/scroll-progress-bar";
+import { SmoothScroll } from "@/components/smooth-scroll/smooth-scroll";
 
 export default function Home() {
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@type": "PetStore",
+    "name": "TeddyPups U.A.E.",
+    "description":
+      "TeddyPups U.A.E. specializes in premium teacup and miniature puppies in Dubai, offering Korean Teacup Maltipoos, Pomeranians, Poodles, and concierge pet delivery across the UAE.",
+    "url": "https://puppy.instabizweb.com",
+    "telephone": "+971500000000",
+    "address": {
+      "@type": "PostalAddress",
+      "addressLocality": "Dubai",
+      "addressCountry": "AE",
+    },
+    "openingHoursSpecification": [
+      {
+        "@type": "OpeningHoursSpecification",
+        "dayOfWeek": [
+          "Monday",
+          "Tuesday",
+          "Wednesday",
+          "Thursday",
+          "Friday",
+          "Saturday",
+          "Sunday",
+        ],
+        "opens": "10:00",
+        "closes": "21:00",
+      },
+    ],
+  };
+
   return (
     <SmoothScroll>
       {/* 1. Small Preloader */}
@@ -23,44 +53,65 @@ export default function Home() {
       {/* Top Scroll Reading Progress */}
       <ScrollProgressBar />
 
-      {/* Interactive Paw Trail following hover in any direction */}
-      <PawTrail />
-
-      {/* Persistent Walking Mascot Companion across landing page */}
-      <LandingCompanion />
-
-      {/* 2. Sticky Header (hides on scroll down, reappears on scroll up, with fullscreen menu) */}
+      {/* 2. Sticky Header */}
       <Header />
 
-      {/* Main Page Flow (Relative container to allow footer reveal beneath) */}
-      <div className="relative z-10 bg-[#fffdf8] shadow-2xl">
-        {/* 3. Hero section with puppy images and names changing one by one */}
-        <Hero />
+      {/* Main Continuous Day-to-Night Scene Container */}
+      <main id="main" className="relative pt-[var(--header-h)] outline-none">
+        <div className="tp-page relative z-10" data-page="home">
+          <script
+            type="application/ld+json"
+            dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+          />
 
-        {/* 4. Meet the pups - pinned horizontal scroll on desktop, native swipe on mobile */}
-        <MeetPups />
+          {/* 1. Hero: Day sky, lineup of 6 arched puppies, scalloped quilt, peeking Teddy */}
+          <Hero />
 
-        {/* 5. Two ways to meet your puppy cards */}
-        <WaysToMeet />
+          {/* 2. Meet: 16 doors, 3D perspective opening, hallway track, treadmill mascot */}
+          <MeetPups />
 
-        {/* 6. Your puppy journey with drawing path & dynamic WhatsApp chat mockup */}
-        <PuppyJourney />
+          {/* 3. Ways to Meet (Paths): Showroom & Worldwide Flight branches with fork mascot */}
+          <WaysToMeet />
 
-        {/* 7. Why families trust TeddyPups cards */}
-        <WhyTrust />
+          {/* 4. Journey: Interactive phone mockup, chat stamps, sitting Teddy */}
+          <PuppyJourney />
 
-        {/* 8. Happy families with testimonial and photo gallery (lightbox on click) */}
-        <HappyFamilies />
+          {/* 5. Trust: Official Dubai passport book, wax & ink stamps, skyline */}
+          <WhyTrust />
 
-        {/* 9. FAQ accordion */}
-        <FaqAccordion />
+          {/* 6. Families: Dusk photowall with washi tape, polaroids, porch lamp, sitting Teddy */}
+          <HappyFamilies />
 
-        {/* 10. Last CTA section */}
-        <CtaSection />
-      </div>
+          {/* 7. FAQ: Night sky with twinkling stars, wonder ?, Teddy mascot */}
+          <FaqAccordion />
 
-      {/* 11. Footer with nice reveal animation */}
+          {/* 8. CTA: Cozy home doorway, Max inside, welcome mat, bowing Teddy */}
+          <CtaSection />
+        </div>
+      </main>
+
+      {/* 9. Authentic Night Sky Footer with Hill Wave, Moon, Stars & Snug Basket Teddy */}
       <Footer />
+
+      {/* 10. Floating Quick Action Bar on Mobile */}
+      <div className="fixed inset-x-0 bottom-0 z-40 border-t-2 border-cocoa bg-milk px-3 pb-[calc(0.6rem+env(safe-area-inset-bottom))] pt-2.5 md:hidden">
+        <div className="mx-auto flex max-w-md items-center justify-between gap-3">
+          <a
+            className="btn btn-primary flex-1 py-2 text-sm text-center"
+            href="https://wa.me/919898124987?text=Hi%20Insta%20Biz%20Web%2C%20I'd%20like%20to%20discuss%20a%20project."
+            rel="noopener noreferrer"
+            target="_blank"
+          >
+            WhatsApp us
+          </a>
+          <Link
+            className="btn btn-ghost flex-1 py-2 text-sm text-center"
+            href="/puppies"
+          >
+            Available puppies
+          </Link>
+        </div>
+      </div>
     </SmoothScroll>
   );
 }

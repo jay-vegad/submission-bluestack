@@ -2,155 +2,283 @@
 
 import { useEffect, useRef } from "react";
 import Image from "next/image";
+import Link from "next/link";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { waysData } from "@/app/data/site-data";
+import { TeddyMascot } from "@/components/mascot/teddy-mascot";
 
 export function WaysToMeet() {
   const sectionRef = useRef<HTMLElement>(null);
-  const cardsRef = useRef<HTMLDivElement>(null);
+  const planeRef = useRef<SVGGElement>(null);
 
   useEffect(() => {
-    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    if (typeof window === "undefined") return;
 
     gsap.registerPlugin(ScrollTrigger);
 
-    const cards = cardsRef.current?.querySelectorAll(".way-card");
-    if (!cards || cards.length === 0) return;
+    const sectionEl = sectionRef.current;
+    const planeEl = planeRef.current;
+    if (!sectionEl || !planeEl) return;
 
-    const ctx = gsap.context(() => {
-      gsap.from(cards, {
-        opacity: 0,
-        y: 40,
-        stagger: 0.2,
-        duration: 0.8,
-        ease: "power2.out",
-        scrollTrigger: {
-          trigger: sectionRef.current,
-          start: "top 75%",
-          toggleActions: "play none none none",
-        },
-      });
-    }, sectionRef);
+    // Cubic bezier path: M40 250 C 170 40, 470 20, 620 168
+    const p0 = { x: 40, y: 250 };
+    const p1 = { x: 170, y: 40 };
+    const p2 = { x: 470, y: 20 };
+    const p3 = { x: 620, y: 168 };
 
-    return () => ctx.revert();
+    const updatePlanePosition = (progress: number) => {
+      const t = Math.max(0, Math.min(1, progress));
+      const mt = 1 - t;
+
+      // Cubic bezier formula
+      const x =
+        mt * mt * mt * p0.x +
+        3 * mt * mt * t * p1.x +
+        3 * mt * t * t * p2.x +
+        t * t * t * p3.x;
+      const y =
+        mt * mt * mt * p0.y +
+        3 * mt * mt * t * p1.y +
+        3 * mt * t * t * p2.y +
+        t * t * t * p3.y;
+
+      // Derivative for exact flight tangent angle
+      const dx =
+        3 * mt * mt * (p1.x - p0.x) +
+        6 * mt * t * (p2.x - p1.x) +
+        3 * t * t * (p3.x - p2.x);
+      const dy =
+        3 * mt * mt * (p1.y - p0.y) +
+        6 * mt * t * (p2.y - p1.y) +
+        3 * t * t * (p3.y - p2.y);
+      const angle = Math.atan2(dy, dx) * (180 / Math.PI);
+
+      planeEl.setAttribute(
+        "transform",
+        `translate(${x.toFixed(1)} ${y.toFixed(1)}) rotate(${angle.toFixed(1)})`
+      );
+    };
+
+    // Initialize plane at Korea
+    updatePlanePosition(0);
+
+    const prefersReducedMotion = window.matchMedia(
+      "(prefers-reduced-motion: reduce)"
+    ).matches;
+
+    if (prefersReducedMotion) {
+      updatePlanePosition(0.5);
+      return;
+    }
+
+    const st = ScrollTrigger.create({
+      trigger: sectionEl,
+      start: "top 80%",
+      end: "bottom 25%",
+      scrub: 0.8,
+      onUpdate: (self) => {
+        updatePlanePosition(self.progress);
+      },
+    });
+
+    return () => {
+      st.kill();
+    };
   }, []);
 
   return (
-    <section
-      ref={sectionRef}
-      id="ways"
-      className="py-20 lg:py-28 bg-[#fbe3b4]/30 relative"
-      aria-labelledby="paths-title"
-    >
-      <div className="max-w-[1152px] mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="text-center max-w-2xl mx-auto mb-14">
-          <span className="font-scrawl text-lg text-[#a24a1a]">
-            Choose your path
-          </span>
-          <h2
-            id="paths-title"
-            className="font-heading text-2xl sm:text-3xl md:text-4xl lg:text-[44px] text-[#2a170e] mt-1 text-balance leading-tight"
-          >
-            <span className="whitespace-nowrap">Two ways to meet</span>{" "}
-            <span className="whitespace-nowrap">your puppy</span>
+    <div data-section="paths">
+      <section
+        ref={sectionRef}
+        data-pup-scene="true"
+        data-tone="light"
+        className="tp-scene tp-paths"
+        style={
+          {
+            "--sky-top": "#fbe3b4",
+            "--sky-bottom": "#f7d18d",
+          } as React.CSSProperties
+        }
+        aria-labelledby="paths-title"
+        data-here="false"
+        data-visited="false"
+      >
+        <div className="gutter mx-auto max-w-[110rem]">
+          <h2 id="paths-title" className="tp-paths__title font-plush text-huge">
+            Two ways to meet your puppy
           </h2>
-          <p className="font-body text-[#5a3a28] text-base sm:text-lg mt-3">
-            Whether you want to cuddle and bond in our Dubai showroom today or
-            import a rare teacup line from Seoul, we provide a seamless,
-            joyful experience.
-          </p>
-        </div>
 
-        {/* 2 Ways Grid */}
-        <div
-          ref={cardsRef}
-          className="grid grid-cols-1 md:grid-cols-2 gap-8 lg:gap-10"
-        >
-          {waysData.ways.map((way) => (
-            <article
-              key={way.id}
-              className="way-card flex flex-col justify-between bg-[#fffdf8] rounded-[32px] p-6 sm:p-8 border-2 border-[#e8d8c8] shadow-[rgba(42,23,14,0.2)_2px_3px_0px_0px] hover:shadow-[rgba(42,23,14,0.25)_0px_7px_0px_-3px] hover:-translate-y-1 transition-all duration-300"
-            >
-              <div>
-                {/* Header Badge */}
-                <div className="flex items-center justify-between mb-4">
-                  <span
-                    className="px-3.5 py-1 rounded-full text-xs font-semibold"
-                    style={{
-                      backgroundColor: `${way.accent}15`,
-                      color: way.accent,
-                    }}
-                  >
-                    {way.badge}
-                  </span>
-                  <span className="text-xs font-bold text-[#5a3a28] uppercase tracking-wider">
-                    Option {way.id === "way-local" ? "01" : "02"}
-                  </span>
-                </div>
+          <div className="tp-fork">
+            {/* Center Wooden Post on desktop */}
+            <div aria-hidden="true" className="tp-fork__post" />
 
-                {/* Card Title */}
-                <h3 className="font-heading text-2xl sm:text-3xl text-[#2a170e] mb-3">
-                  {way.title}
-                </h3>
+            {/* 1. Puppies in Dubai (Left) */}
+            <article className="tp-way tp-way--left" aria-labelledby="way-local">
+              <h3 id="way-local" className="tp-sign tp-sign--left font-plush">
+                Puppies in Dubai
+              </h3>
 
-                {/* Description */}
-                <p className="font-body text-[#5a3a28] text-base leading-relaxed mb-6">
-                  {way.description}
-                </p>
-
-                {/* Image Illustration */}
-                <div className="relative w-full aspect-[16/9] rounded-2xl overflow-hidden mb-6 bg-[#fbe3b4]/40 border border-[#e8dfd3]">
-                  <Image
-                    src={way.image}
-                    alt={way.title}
-                    fill
-                    sizes="(max-width: 768px) 100vw, 500px"
-                    className="object-cover"
+              <div className="tp-way__scene" data-pup-look="true">
+                <svg
+                  viewBox="0 0 300 120"
+                  className="tp-way__skyline"
+                  aria-hidden="true"
+                >
+                  <path
+                    d="M4 116h292M20 116V78h16v38M44 116V60h18v56M70 116V84h12v32M150 116V36l4-6v-14l3-4 3 4v14l4 6v80M118 116V70l12-8v54M174 116V64l14 8v44M200 116V82h18v34M226 116V56h14v60M248 116V88h22v28"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2.6"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
                   />
-                </div>
+                </svg>
 
-                {/* Highlights List */}
-                <ul className="space-y-3 mb-8" aria-label="Highlights">
-                  {way.highlights.map((highlight, idx) => (
-                    <li
-                      key={idx}
-                      className="flex items-start gap-3 text-sm sm:text-base text-[#2a170e]"
-                    >
-                      <span className="flex-shrink-0 w-5 h-5 rounded-full bg-[#1f7a4d]/15 text-[#1f7a4d] flex items-center justify-center mt-0.5">
-                        <svg
-                          width="12"
-                          height="12"
-                          viewBox="0 0 24 24"
-                          fill="none"
-                          stroke="currentColor"
-                          strokeWidth="3.2"
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                        >
-                          <polyline points="20 6 9 17 4 12" />
-                        </svg>
-                      </span>
-                      <span>{highlight}</span>
-                    </li>
-                  ))}
-                </ul>
+                <figure className="tp-window">
+                  <span className="tp-window__glass">
+                    <Image
+                      alt="A tiny apricot teddy bear puppy held up in the TeddyPups showroom"
+                      loading="lazy"
+                      decoding="async"
+                      fill
+                      sizes="(min-width: 1024px) 16rem, 60vw"
+                      style={{
+                        position: "absolute",
+                        height: "100%",
+                        width: "100%",
+                        inset: "0px",
+                        objectFit: "cover",
+                        objectPosition: "54.3% 48.3%",
+                        backgroundColor: "rgb(104, 88, 72)",
+                      }}
+                      src="https://puppy.instabizweb.com/media/FHyoHcIosLZE/60f6e7e00a/27b888_323008bb0f6a41d4bde2a0da7206cd98f000.jpg"
+                    />
+                  </span>
+                  <figcaption className="font-scrawl">In our showroom</figcaption>
+                </figure>
               </div>
 
-              {/* Action Button */}
-              <a
-                href={way.ctaHref}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="button-primary w-full text-center text-base"
-              >
-                {way.ctaText}
-              </a>
+              <p className="tp-way__text">
+                See them, love them, take them home. Come meet our locally available
+                puppies before you decide.
+              </p>
+
+              <Link className="btn btn-primary" href="/puppies?origin=local">
+                Meet local puppies
+              </Link>
             </article>
-          ))}
+
+            {/* 2. Imported for you (Right) */}
+            <article
+              className="tp-way tp-way--right"
+              aria-labelledby="way-imported"
+            >
+              <h3
+                id="way-imported"
+                className="tp-sign tp-sign--right font-plush"
+              >
+                Imported for you
+              </h3>
+
+              <div className="tp-way__scene" data-pup-look="true">
+                <div className="tp-flight">
+                  <svg
+                    viewBox="0 0 660 300"
+                    role="img"
+                    aria-label="A plane bringing a Korean Teacup Maltipoo puppy from Korea to Dubai"
+                  >
+                    <defs>
+                      <clipPath id="_tp_flight_porthole_clip_">
+                        <circle r="25" />
+                      </clipPath>
+                    </defs>
+
+                    {/* Flight Path Route */}
+                    <path
+                      d="M40 250 C 170 40, 470 20, 620 168"
+                      className="tp-flight__route"
+                    />
+                    <circle cx="40" cy="250" r="7" className="tp-flight__dot" />
+                    <circle cx="620" cy="168" r="7" className="tp-flight__dot" />
+
+                    <text
+                      x="40"
+                      y="284"
+                      textAnchor="middle"
+                      className="tp-flight__label"
+                    >
+                      Korea
+                    </text>
+                    <text
+                      x="620"
+                      y="202"
+                      textAnchor="middle"
+                      className="tp-flight__label"
+                    >
+                      Dubai
+                    </text>
+
+                    {/* Airplane group moving along the route curve */}
+                    <g
+                      ref={planeRef}
+                      id="tp-landing-airplane-group"
+                      transform="translate(40.0 250.0) rotate(-58.2)"
+                      style={{ opacity: 1, willChange: "transform" }}
+                    >
+                      <g transform="translate(-126 -78)">
+                        <path
+                          d="M28 60 L8 26 L34 26 L60 54 Z"
+                          className="tp-flight__wing"
+                        />
+                        <path
+                          d="M108 112 L142 156 L172 156 L158 112 Z"
+                          className="tp-flight__wing tp-flight__wing--far"
+                        />
+                        <path
+                          d="M20 80 C20 52 52 44 80 44 L168 44 C200 44 224 60 232 80 C224 100 200 112 168 112 L80 112 C52 112 20 104 20 80 Z"
+                          className="tp-flight__body"
+                        />
+                        <path
+                          d="M104 44 L138 2 L168 2 L154 44 Z"
+                          className="tp-flight__wing"
+                        />
+                        <path
+                          d="M206 64 C215 67 221 73 224 80"
+                          className="tp-flight__line"
+                        />
+                      </g>
+                      <g transform="translate(10 2)">
+                        <image
+                          href="https://puppy.instabizweb.com/media/gAaGwoGej2g6/5523e884dd/b942a5_50f0ae67c9ff437d911597d52a9e63b3-mv2.jpg"
+                          x="-25"
+                          y="-25"
+                          width="50"
+                          height="50"
+                          clipPath="url(#_tp_flight_porthole_clip_)"
+                          preserveAspectRatio="xMidYMid slice"
+                        />
+                        <circle r="25" className="tp-flight__porthole" />
+                      </g>
+                    </g>
+                  </svg>
+                </div>
+              </div>
+
+              <p className="tp-way__text">
+                Exclusive Korean teacup puppies, delivered. Order from the
+                world&apos;s most reputable breeders and let us handle the import.
+              </p>
+
+              <Link className="btn btn-primary" href="/puppies?origin=imported">
+                See imported puppies
+              </Link>
+            </article>
+
+            {/* Fork Mascot */}
+            <TeddyMascot pose="sit" facing="right" className="tp-fork__teddy" />
+          </div>
         </div>
-      </div>
-    </section>
+      </section>
+    </div>
   );
 }
-

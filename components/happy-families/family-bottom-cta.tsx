@@ -4,7 +4,7 @@ import React from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { siteMetadata } from "@/app/data/site-data";
-import { PuppySVG } from "@/components/puppy-svg";
+import { PuppySVG } from "@/components/puppy-svg/puppy-svg";
 
 export function FamilyBottomCta() {
   return (
